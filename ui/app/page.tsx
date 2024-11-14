@@ -33,6 +33,17 @@ export default function Home() {
     initCounter();
   }, []);
 
+  const handleInc = async () => {
+    console.log(1);
+    if (counterRef.current) {
+      console.log(2);
+      const a = await counterRef.current.inc();
+      console.log(a);
+      console.log(3);
+      updateNum();
+    }
+  };
+
   return (
     <>
       <Head>
@@ -56,7 +67,8 @@ export default function Home() {
                 </span>
               </div>
               <button 
-                className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 text-white text-2xl font-bold hover:opacity-80 transition-opacity duration-200 shadow-md flex items-center justify-center">
+                className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 text-white text-2xl font-bold hover:opacity-80 transition-opacity duration-200 shadow-md flex items-center justify-center"
+                onClick={handleInc}>
                 +
               </button>
             </div>
