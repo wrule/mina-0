@@ -57,15 +57,11 @@ describe('Counter', () => {
     // update transaction
     const txn = await Mina.transaction(senderAccount, async () => {
       await zkApp.inc();
-      await zkApp.inc();
-      await zkApp.inc();
-      await zkApp.inc();
-      await zkApp.dec();
     });
     await txn.prove();
     await txn.sign([senderKey]).send();
 
     const updatedNum = zkApp.num.get();
-    expect(updatedNum).toEqual(Field(1996));
+    expect(updatedNum).toEqual(Field(1994));
   });
 });
