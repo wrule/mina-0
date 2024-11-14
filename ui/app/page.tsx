@@ -1,11 +1,8 @@
 'use client';
 import Head from 'next/head';
-import Image from 'next/image';
 import { useEffect } from 'react';
 import GradientBG from '../components/GradientBG.js';
 import styles from '../styles/Home.module.css';
-import heroMinaLogo from '../public/assets/hero-mina-logo.svg';
-import arrowRightSmall from '../public/assets/arrow-right-small.svg';
 
 export default function Home() {
   useEffect(() => {
