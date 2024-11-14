@@ -20,7 +20,9 @@ export default function Home() {
           'The following error is caused because the zkAppAddress has an empty string as the public key. Update the zkAppAddress with the public key for your zkApp account, or try this address for an example "Add" smart contract that we deployed to Testnet: B62qnTDEeYtBHBePA4yhCt4TCgDtA4L2CGvK7PirbJyX4pKH8bmtWe5'
         );
       }
-      //const zkApp = new Add(PublicKey.fromBase58(zkAppAddress))
+      const zkApp = new Add(PublicKey.fromBase58(zkAppAddress));
+      const currentNum = await zkApp.num.get();
+      console.log(1234, currentNum.toString());
     })();
   }, []);
 
