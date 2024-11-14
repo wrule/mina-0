@@ -7,7 +7,7 @@
       "keyPath": "keys/mina-0.json",
       "feepayerKeyPath": "/Users/jimao/.cache/zkapp-cli/keys/account_1.json",
       "feepayerAlias": "account_1",
-      "fee": "5",
+      "fee": "10",
       "smartContract": "Counter"
     }
   }
