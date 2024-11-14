@@ -54,14 +54,30 @@ describe('Counter', () => {
   it('correctly updates the num state on the `Counter` smart contract', async () => {
     await localDeploy();
 
-    // update transaction
-    const txn = await Mina.transaction(senderAccount, async () => {
-      await zkApp.inc();
-    });
-    await txn.prove();
-    await txn.sign([senderKey]).send();
+    async function inc() {
+      const txn = await Mina.transaction(senderAccount, async () => {
+        await zkApp.inc();
+      });
+      await txn.prove();
+      await txn.sign([senderKey]).send();
+    }
+
+    async function sub() {
+      const txn = await Mina.transaction(senderAccount, async () => {
+        await zkApp.dec();
+      });
+      await txn.prove();
+      await txn.sign([senderKey]).send();
+    }
+
+    await sub();
+    await inc();
+    await inc();
+    await inc();
+    await inc();
+    await sub();
 
     const updatedNum = zkApp.num.get();
-    expect(updatedNum).toEqual(Field(1994));
+    expect(updatedNum).toEqual(Field(1995));
   });
 });
