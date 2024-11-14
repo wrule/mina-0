@@ -7,13 +7,21 @@ import styles from '../styles/Home.module.css';
 export default function Home() {
   useEffect(() => {
     (async () => {
-      const { Mina, PublicKey } = await import('o1js');
+      const { Mina, PublicKey, fetchAccount } = await import('o1js');
       const { Add } = await import('../../contracts/build/src/');
+
+      // 设置连接到 Berkeley 测试网
+      const Berkeley = Mina.Network(
+        'https://proxy.berkeley.minaexplorer.com/graphql'
+      );
+      Mina.setActiveInstance(Berkeley);
 
       // Update this to use the address (public key) for your zkApp account.
       // To try it out, you can try this address for an example "Add" smart contract that we've deployed to
       // Testnet B62qnTDEeYtBHBePA4yhCt4TCgDtA4L2CGvK7PirbJyX4pKH8bmtWe5.
       const zkAppAddress = 'B62qnTDEeYtBHBePA4yhCt4TCgDtA4L2CGvK7PirbJyX4pKH8bmtWe5';
+
+      await fetchAccount({ publicKey: zkAppAddress });
       // This should be removed once the zkAppAddress is updated.
       if (!zkAppAddress) {
         console.error(
