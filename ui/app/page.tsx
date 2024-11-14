@@ -1,6 +1,6 @@
 'use client';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import GradientBG from '../components/GradientBG.js';
 import styles from '../styles/Home.module.css';
 import { Mina, PublicKey, fetchAccount } from 'o1js';
@@ -10,16 +10,27 @@ const RPC_ADDRESS = 'https://api.minascan.io/node/devnet/v1/graphql';
 const CONTRACT_ADDRESS = 'B62qkqaxfZZPPE5T8RSU3bpCZ9CP3XtYzCQvUbJU6c6DcjPrRyC13V4';
 
 export default function Home() {
+  const counterRef = useRef<Counter>();
   const [num, setNum] = useState<string>('');
 
-  useEffect(() => {
-    (async () => {
+  const updateNum = async () => {
+    if (counterRef.current) {
+      const currentNum = await counterRef.current.num.get();
+      setNum(currentNum.toString());
+    }
+  };
+
+  const initCounter = async () => {
+    if (!counterRef.current) {
       Mina.setActiveInstance(Mina.Network(RPC_ADDRESS));
       await fetchAccount({ publicKey: CONTRACT_ADDRESS });
-      const zkApp = new Counter(PublicKey.fromBase58(CONTRACT_ADDRESS));
-      const currentNum = await zkApp.num.get();
-      setNum(currentNum.toString());
-    })();
+      counterRef.current = new Counter(PublicKey.fromBase58(CONTRACT_ADDRESS));
+      updateNum();
+    }
+  };
+
+  useEffect(() => {
+    initCounter();
   }, []);
 
   return (
