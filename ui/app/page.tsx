@@ -1,24 +1,24 @@
 'use client';
 import Head from 'next/head';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import GradientBG from '../components/GradientBG.js';
 import styles from '../styles/Home.module.css';
+import { Mina, PublicKey, fetchAccount } from 'o1js';
+import { Counter } from '../../contracts/build/src/';
 
 const RPC_ADDRESS = 'https://api.minascan.io/node/devnet/v1/graphql';
 const CONTRACT_ADDRESS = 'B62qkqaxfZZPPE5T8RSU3bpCZ9CP3XtYzCQvUbJU6c6DcjPrRyC13V4';
 
 export default function Home() {
+  const [num, setNum] = useState<string>('');
+
   useEffect(() => {
     (async () => {
-      const { Mina, PublicKey, fetchAccount } = await import('o1js');
-      const { Counter } = await import('../../contracts/build/src/');
-      const Devnet = Mina.Network(RPC_ADDRESS);
-      Mina.setActiveInstance(Devnet);
-      const zkAppAddress = CONTRACT_ADDRESS;
-      await fetchAccount({ publicKey: zkAppAddress });
-      const zkApp = new Counter(PublicKey.fromBase58(zkAppAddress));
+      Mina.setActiveInstance(Mina.Network(RPC_ADDRESS));
+      await fetchAccount({ publicKey: CONTRACT_ADDRESS });
+      const zkApp = new Counter(PublicKey.fromBase58(CONTRACT_ADDRESS));
       const currentNum = await zkApp.num.get();
-      console.log(1234, currentNum.toString());
+      setNum(currentNum.toString());
     })();
   }, []);
 
@@ -41,7 +41,7 @@ export default function Home() {
               </button>
               <div className="w-24 h-16 rounded-lg bg-white/50 backdrop-blur-md flex items-center justify-center">
                 <span className="text-2xl font-bold text-gray-800">
-                  1
+                  {num}
                 </span>
               </div>
               <button 
