@@ -2,7 +2,7 @@ import { AccountUpdate, Field, Mina, PrivateKey, PublicKey } from 'o1js';
 import { Counter } from './Counter';
 
 /*
- * This file specifies how to test the `Add` example smart contract. It is safe to delete this file and replace
+ * This file specifies how to test the `Counter` example smart contract. It is safe to delete this file and replace
  * with your own tests.
  *
  * See https://docs.minaprotocol.com/zkapps for more info.
@@ -10,7 +10,7 @@ import { Counter } from './Counter';
 
 let proofsEnabled = false;
 
-describe('Add', () => {
+describe('Counter', () => {
   let deployerAccount: Mina.TestPublicKey,
     deployerKey: PrivateKey,
     senderAccount: Mina.TestPublicKey,
@@ -45,13 +45,13 @@ describe('Add', () => {
     await txn.sign([deployerKey, zkAppPrivateKey]).send();
   }
 
-  it('generates and deploys the `Add` smart contract', async () => {
+  it('generates and deploys the `Counter` smart contract', async () => {
     await localDeploy();
     const num = zkApp.num.get();
     expect(num).toEqual(Field(1993));
   });
 
-  it('correctly updates the num state on the `Add` smart contract', async () => {
+  it('correctly updates the num state on the `Counter` smart contract', async () => {
     await localDeploy();
 
     // update transaction
