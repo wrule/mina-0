@@ -35,37 +35,37 @@ export default function Home() {
   }, []);
 
   const handleInc = async () => {
-    try {
-      if (!counterRef.current || !minaInfo.mainAccount) {
-        alert('Please connect wallet first');
-        return;
-      }
-  
-      // 获取发送者账户
+    if (minaInfo.mainAccount) {
+      console.log('PublicKey.fromBase58');
       const sender = PublicKey.fromBase58(minaInfo.mainAccount);
-      
-      // 创建交易
+      console.log('await Mina.transaction');
       const transaction = await Mina.transaction(
-        { sender, fee: "1" }, // 设置手续费
-        async () => {
-          await counterRef.current!.inc();
-        }
-      );
-
-      await transaction.prove();
-  
-      // 请求用户签名
-      const response = await window.mina!.sendTransaction({
-        transaction: transaction.toJSON(),
-        feePayer: {
-          fee: 1,
+        {
+          sender: sender,
+          fee: "1",
           memo: "Increment counter",
         },
+        async () => {
+          await counterRef.current!.inc();
+        },
+      );
+      console.log('Counter.compile()');
+      await Counter.compile();
+      console.log('transaction.prove()');
+      await transaction.prove();
+      console.log('over');
+      const transactionJSON = transaction.toJSON();
+      console.log(transactionJSON);
+
+      const mina = minaInfo.getMina();
+      const a = await mina.sendTransaction({
+        onlySign: true,
+        transaction: transactionJSON,
+        feePayer: {
+          fee: 1,
+        },
       });
-  
-    } catch (error: any) {
-      console.error('Transaction failed:', error);
-      alert(`Transaction failed: ${error.message}`);
+      console.log(a);
     }
   };
 
