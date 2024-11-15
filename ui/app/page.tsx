@@ -35,13 +35,37 @@ export default function Home() {
   }, []);
 
   const handleInc = async () => {
-    console.log(1);
-    if (counterRef.current) {
-      console.log(2);
-      const a = await counterRef.current.inc();
-      console.log(a);
-      console.log(3);
-      updateNum();
+    try {
+      if (!counterRef.current || !minaInfo.mainAccount) {
+        alert('Please connect wallet first');
+        return;
+      }
+  
+      // 获取发送者账户
+      const sender = PublicKey.fromBase58(minaInfo.mainAccount);
+      
+      // 创建交易
+      const transaction = await Mina.transaction(
+        { sender, fee: "1" }, // 设置手续费
+        async () => {
+          await counterRef.current!.inc();
+        }
+      );
+
+      await transaction.prove();
+  
+      // 请求用户签名
+      const response = await window.mina!.sendTransaction({
+        transaction: transaction.toJSON(),
+        feePayer: {
+          fee: 1,
+          memo: "Increment counter",
+        },
+      });
+  
+    } catch (error: any) {
+      console.error('Transaction failed:', error);
+      alert(`Transaction failed: ${error.message}`);
     }
   };
 
