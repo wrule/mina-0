@@ -5,6 +5,7 @@ import GradientBG from '../components/GradientBG.js';
 import styles from '../styles/Home.module.css';
 import { Mina, PublicKey, fetchAccount } from 'o1js';
 import { Counter } from '../../contracts/build/src/';
+import { useMina } from '../hooks/mina';
 
 const RPC_ADDRESS = 'https://api.minascan.io/node/devnet/v1/graphql';
 const CONTRACT_ADDRESS = 'B62qkqaxfZZPPE5T8RSU3bpCZ9CP3XtYzCQvUbJU6c6DcjPrRyC13V4';
@@ -44,6 +45,8 @@ export default function Home() {
     }
   };
 
+  const minaInfo = useMina();
+
   return (
     <>
       <Head>
@@ -55,12 +58,15 @@ export default function Home() {
         <main className={styles.main}>
           <h1>Mina-0</h1>
           <div>
+            <pre>
+              {JSON.stringify(minaInfo, null, 2)}
+            </pre>
+          </div>
+          <div>
             <button
               className="px-6 py-3 text-white font-semibold rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
               onClick={() => {
-                // if (typeof window.mina !== 'undefined') {
-                //   console.log('Auro Wallet is installed!');
-                // }
+                minaInfo.connect();
               }}>
               Connect Auro Wallet
             </button>
