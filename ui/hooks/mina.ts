@@ -24,8 +24,19 @@ const useMina = () => {
     return result;
   };
 
+  const getNetworkInfo = async () => {
+    try {
+      const network = await mina.requestNetwork();
+      setChainInfo(network);
+      return network;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   useEffect(() => {
     connect();
+    getNetworkInfo();
     mina.on('accountsChanged', handleAccountsChanged);
     mina.on('chainChanged', handleChainChanged);
     return () => {
