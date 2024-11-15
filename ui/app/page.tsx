@@ -55,7 +55,13 @@ export default function Home() {
         <main className={styles.main}>
           <h1>Mina-0</h1>
           <div>
-            <button className="px-6 py-3 text-white font-semibold rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl">
+            <button
+              className="px-6 py-3 text-white font-semibold rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
+              onClick={() => {
+                // if (typeof window.mina !== 'undefined') {
+                //   console.log('Auro Wallet is installed!');
+                // }
+              }}>
               Connect Auro Wallet
             </button>
           </div>
