@@ -1,5 +1,5 @@
 import { ChainInfoArgs, ProviderError } from '@aurowallet/mina-provider';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 export
 const useMina = () => {
@@ -7,6 +7,8 @@ const useMina = () => {
 
   const [accounts, setAccounts] = useState<string[]>([]);
   const [chainInfo, setChainInfo] = useState<ChainInfoArgs | null>(null);
+
+  const mainAccount = useMemo(() => accounts[0] as string | undefined, [accounts]);
 
   const handleAccountsChanged = (accounts: string[]) => {
     setAccounts(accounts);
@@ -48,6 +50,7 @@ const useMina = () => {
   return {
     connect,
     accounts,
+    mainAccount,
     chainInfo,
   };
 };
