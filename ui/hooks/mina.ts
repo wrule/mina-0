@@ -36,6 +36,8 @@ const useMina = () => {
     }
   };
 
+  const getMina = () => mina;
+
   useEffect(() => {
     connect();
     getNetworkInfo();
@@ -49,6 +51,8 @@ const useMina = () => {
 
   return {
     connect,
+    getNetworkInfo,
+    getMina,
     accounts,
     mainAccount,
     chainInfo,
